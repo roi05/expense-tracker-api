@@ -7,7 +7,12 @@ const morgan = require('morgan');
 const expenseRoute = require('./routes/expense');
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://expense-tracker-app-aats.onrender.com',
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(morgan('tiny'));
 
 // body-parser
