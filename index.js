@@ -5,14 +5,10 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const expenseRoute = require('./routes/expense');
+const corsOption = require('./utils/corsOption');
 const app = express();
 
-app.use(
-  cors({
-    origin: 'https://expense-tracker-app-aats.onrender.com',
-    optionsSuccessStatus: 200,
-  })
-);
+app.use(cors(corsOption));
 app.use(morgan('tiny'));
 
 // body-parser
