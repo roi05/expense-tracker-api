@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+const { authMiddleware } = require('../middleware/auth');
+
 const {
   getAllExpense,
   getSingleExpense,
@@ -9,6 +11,8 @@ const {
   deleteExpense,
   updateExpense,
 } = require('../controllers/expenseController');
+
+router.use(authMiddleware);
 
 router.route('/').get(getAllExpense).post(postExpense);
 

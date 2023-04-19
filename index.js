@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const expenseRoute = require('./routes/expense');
+const userRoute = require('./routes/user');
 const corsOption = require('./utils/corsOption');
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1/expense', expenseRoute);
+app.use('/api/v1/user', userRoute);
 
 mongoose
   .connect(process.env.MONGO_URI)

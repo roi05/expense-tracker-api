@@ -3,21 +3,26 @@ const Expense = require('../models/expenseModel');
 const expenseValidation = require('../utils/expenseValidation');
 
 const getAllExpense = async (req, res) => {
-  const expense = await Expense.find({}).sort({ createdAt: -1 });
+  const expense = await Expense.find({ user_id: req.user }).sort({
+    createdAt: -1,
+  });
   res.status(200).json({ expense });
 };
 
 const postExpense = async (req, res) => {
   const expense = req.body;
   const { error, value } = expenseValidation(expense);
+
+  const newValues = { ...value, user_id: req.user };
+
   if (error) {
     return res.status(400).json({ error: error.details });
   }
   try {
-    const data = await Expense.create(value);
+    const data = await Expense.create(newValues);
     res.status(201).json(data);
   } catch (error) {
-    res.status(200).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -45,16 +50,14 @@ const deleteExpense = async (req, res) => {
   }
 
   try {
-    const expense = await Expense.findOneAndDelete(id);
+    const expense = await Expense.findOneAndDelete({ _id: id });
     if (!expense) {
       return res.status(400).json({ error: 'No such expense' });
     }
     return res.status(200).json({ expense });
   } catch (error) {
-    res.status(200).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
-
-  res.json({ id });
 };
 const updateExpense = (req, res) => {
   res.json('update request');
